@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Tag;
 
 class TagController extends Controller
-{
+{   
+    protected $validationRule = [
+        "name" => "required|string|max:20|unique:tags,name"
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +30,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.tags.create");
     }
 
     /**
@@ -37,7 +41,19 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validation
+        $request->validate($this->validationRule);
+
+        // add data
+        $data = $request->all();
+
+        $newTag = new Tag();
+        $newTag->name = $data["name"];
+        $newTag->slug = Str::of($newTag->name)->slug("-");
+        $newTag->save();
+
+        // redirect
+        return redirect()->route("tags.index");
     }
 
     /**
