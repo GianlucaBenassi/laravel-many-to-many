@@ -20,6 +20,7 @@ class PostsTableSeeder extends Seeder
             $newPost->slug = Str::of($newPost->title)->slug("-");
             $newPost->content = $faker->text(1000);
             $newPost->published = rand(0,1);
+            $newPost->category_id = rand(1,4);
             $newPost->save();
         }
     }

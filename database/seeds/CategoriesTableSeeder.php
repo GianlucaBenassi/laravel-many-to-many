@@ -13,7 +13,7 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['Technology', 'Sport', 'Fashion', 'Kitchen'];
+        $categories = ['First Course', 'Main Course', 'Side', 'Desserts'];
 
         foreach ($categories as $category) {
             $newCategory = new Category();
