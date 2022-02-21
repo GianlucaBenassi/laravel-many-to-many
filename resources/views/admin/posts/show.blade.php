@@ -23,6 +23,17 @@
         @else
             <span class="d-block"><strong>Category:</strong> Null</span>
         @endif
+        {{-- Tags --}}
+        <div>
+            <strong>Tags:</strong>
+            @if (count($post->tags) > 0)
+                @foreach ($post->tags as $tag)
+                <span class="badge badge-success">{{$tag->name}}</span>
+                @endforeach
+            @else 
+                <span>Null</span>
+            @endif
+        </div>
         {{-- Creation date --}}
         <span class="d-block mb-5"><strong>Created:</strong> {{$post->created_at}}</span>
 
