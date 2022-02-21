@@ -104,7 +104,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view("admin.posts.edit", compact("post", "categories"));
+        $tags = Tag::all();
+
+        return view("admin.posts.edit", compact("post", "categories", "tags"));
     }
 
     /**
@@ -140,6 +142,13 @@ class PostController extends Controller
         $post->published = isset($data["published"]);
         $post->category_id = $data["category_id"];
         $post->save();
+
+        // tags save
+        if (isset($data["tags"])) {
+            $post->tags()->sync($data["tags"]);
+        } else {
+            $post->tags()->detach();
+        }
 
         // redirect
         return redirect()->route("posts.show", $post->id);
