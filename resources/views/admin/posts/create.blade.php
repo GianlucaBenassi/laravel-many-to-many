@@ -42,8 +42,20 @@
                 </div>
             </div>
 
+            {{-- post tags --}}
+            <label class="d-block">Tags</label>
+            @foreach ($tags as $tag)
+                <div class="form-check form-check-inline @error('tags') is-invalid @enderror">
+                    <input class="form-check-input" type="checkbox" id="{{$tag->slug}}" value="{{$tag->id}}" name="tags[]" {{in_array($tag->id, old("tags", [])) ? 'checked' : ''}}>
+                    <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}}</label>
+                </div>
+            @endforeach
+            @error('tags')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
             {{-- post published --}}
-            <div class="form-group form-check">
+            <div class="form-group form-check mt-4">
                 <input type="checkbox" class="form-check-input @error('published') is-invalid @enderror" id="published" name="published" {{old('published') ? 'checked' : ''}}>
                 <label class="form-check-label" for="published">Publish</label>
                 @error('published')

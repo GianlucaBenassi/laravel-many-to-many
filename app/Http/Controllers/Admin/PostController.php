@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -14,7 +15,8 @@ class PostController extends Controller
         "title" => "required|string|max:100",
         "content" => "required|string",
         "published" => "sometimes|accepted",
-        "category_id" => "nullable|exists:categories,id"
+        "category_id" => "nullable|exists:categories,id",
+        "tags" => "nullable|exists:tags,id"
     ];
     /**
      * Display a listing of the resource.
@@ -36,8 +38,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view("admin.posts.create", compact("categories"));
+        return view("admin.posts.create", compact("categories", "tags"));
     }
 
     /**
@@ -70,6 +73,11 @@ class PostController extends Controller
         $newPost->slug = $slug;
         $newPost->category_id = $data["category_id"];
         $newPost->save();
+
+        // tags save
+        if (isset($data["tags"])) {
+            $newPost->tags()->attach($data["tags"]);
+        }
 
         // redirect
         return redirect()->route("posts.show", $newPost->id);
